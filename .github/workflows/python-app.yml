@@ -28,6 +28,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install flake8
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        pip install coverage
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
@@ -36,4 +37,7 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=80 --statistics
     - name: Test with unittest
       run: |
-        python -m unittest
+        coverage run -m unittest
+        coverage xml
+    - name: Upload coverage reports to Codecov by GitHub Action
+      uses: codecov/codecov-action@v3
